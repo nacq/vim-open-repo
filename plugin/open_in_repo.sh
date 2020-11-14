@@ -4,23 +4,23 @@
 # current file and line number
 #
 # $1 filename
-# $2 line number
+# $2 default_branch
+# $3 line number start
+# $4 line number end
 
 [[ ! -d .git ]] && echo "Not in a git repo" && exit 1
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-REPO_URL=`git remote -v | \
-  head -n 1 | \
-  awk '{ print $2 }' | \
-  sed 's/\.git//g'`
+CURRENT_BRANCH=$2
+[[ ! $CURRENT_BRANCH ]] && CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
-if [[ `git remote -v | grep git@` ]]; then
-    REPO_URL='https://'`echo $REPO_URL | \
-      awk -F '@' '{ print $2 }' | \
-      sed 's/\:/\//g'`
-fi
+REMOTE=`git remote -v`
+LINE_PARAM=$3
+REPO_URL=`echo $REMOTE | head -n 1 | awk '{ print $2 }' | sed 's/\.git//g'`
 
-echo $REPO_URL
+[[ `echo $REMOTE | grep git@` ]] && REPO_URL='https://'`echo $REPO_URL | awk -F '@' '{ print $2 }' | \
+    sed 's/\:/\//g'`
+
+[[ `echo $REPO_URL | grep github` && $4 ]] && LINE_PARAM=$LINE_PARAM':L'$4
 
 # open url in default browser
-open "$REPO_URL/blob/$CURRENT_BRANCH/$1#L$2"
+open "$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM"
