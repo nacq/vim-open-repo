@@ -19,7 +19,7 @@ endfunction
 
 " 'range' will avoid the command to execute multiple times when there is a range selection
 function! OpenRepo() range
-  let default_branch = 'master'
+  let default_branch = 0
   let selection = GetVisualSelection()
 
   if exists('g:vim_open_repo_default_branch')

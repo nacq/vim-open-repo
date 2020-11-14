@@ -11,7 +11,7 @@
 [[ ! -d .git ]] && echo "Not in a git repo" && exit 1
 
 CURRENT_BRANCH=$2
-[[ ! $CURRENT_BRANCH ]] && CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+[[ $CURRENT_BRANCH == '0' ]] && CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 REMOTE=`git remote -v`
 LINE_PARAM=$3
