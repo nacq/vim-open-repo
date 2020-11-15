@@ -21,12 +21,14 @@ endfunction
 function! OpenRepo() range
   let default_branch = 0
   let selection = GetVisualSelection()
+  " current file path relative to the git project
+  let current_file = expand('%:.')
 
   if exists('g:vim_open_repo_default_branch')
     let default_branch = g:vim_open_repo_default_branch
   endif
 
-  execute "!" s:plugin_path . "/open_in_repo.sh" bufname("%") default_branch selection
+  execute "!" s:plugin_path . "/open_in_repo.sh" current_file default_branch selection
 endfunction
 
 if !exists('g:vim_open_repo_loaded')
