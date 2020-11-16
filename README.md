@@ -1,6 +1,19 @@
 # vim-open-repo
 
-Another vim plugin to open your current line in the repository site.
+Another vim plugin to open your current line in the repository website (Github, Gitlab or Bitbucket).
+
+## Installation
+
+As any other plugin.
+Example using vim-plug:
+
+```vim
+call plug#begin('~/.vim/plugged')
+
+Plug 'nicolasacquaviva/vim-open-repo'
+
+call plug#end()
+```
 
 ## Usage
 
