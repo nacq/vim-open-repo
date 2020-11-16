@@ -20,7 +20,26 @@ REPO_URL=`echo $REMOTE | head -n 1 | awk '{ print $2 }' | sed 's/\.git//g'`
 [[ `echo $REMOTE | grep git@` ]] && REPO_URL='https://'`echo $REPO_URL | awk -F '@' '{ print $2 }' | \
     sed 's/\:/\//g'`
 
-[[ `echo $REPO_URL | grep github` && $4 ]] && LINE_PARAM=$LINE_PARAM':L'$4
+[[ `echo $REPO_URL | grep bitbucket` ]] && REPO_URL='https://'`echo $REPO_URL | awk -F '@' '{ print $2 }'` && \
+  LATEST_COMMIT=`git show | head -n 1 | awk '{ print $2 }'`
 
-# open url in default browser
+if [[ $4 ]]; then
+  [[ `echo $REPO_URL | grep github` ]] && LINE_PARAM=$LINE_PARAM':L'$4
+  [[ `echo $REPO_URL | grep gitlab` ]] && LINE_PARAM=$LINE_PARAM'-'$4
+
+  if [[ `echo $REPO_URL | grep bitbucket` ]]; then
+    LINE_PARAM='#lines-'$LINE_PARAM':'$4
+    open "$REPO_URL/src/$LATEST_COMMIT/$1$LINE_PARAM"
+
+    exit 0
+  fi
+fi
+
+if [[ `echo $REPO_URL | grep bitbucket` ]]; then
+  open "$REPO_URL/src/$LATEST_COMMIT/$1#lines-$LINE_PARAM"
+
+  exit 0
+fi
+
+# # open url in default browser
 open "$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM"
