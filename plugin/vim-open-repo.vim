@@ -9,6 +9,9 @@ function! GetVisualSelection()
   let line_start = getpos("'<")[1]
   let line_end = getpos("'>")[1]
 
+  " delete marks used by the latest visual selection to avoid opening the same again
+  delmarks < >
+
   " return the cursor position if the visual selection is just one line
   if line_start != 0 && line_end != 0 && line_start != line_end
     return join([line_start, line_end], " ")
