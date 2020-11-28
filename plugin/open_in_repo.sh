@@ -41,5 +41,12 @@ if [[ `echo $REPO_URL | grep bitbucket` ]]; then
   exit 0
 fi
 
-# # open url in default browser
-open "$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM"
+# open url in default browser
+URL=$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM
+
+case $OSTYPE in
+  darwin) open $URL ;;
+  darwin18) open $URL ;;
+  darwin19) open $URL ;;
+  linux-gnu) xdg-open $URL ;;
+esac
