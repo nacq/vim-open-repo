@@ -17,6 +17,11 @@ REMOTE=`git remote -v`
 LINE_PARAM=$3
 REPO_URL=`echo $REMOTE | head -n 1 | awk '{ print $2 }' | sed 's/\.git//g'`
 
+case $OSTYPE in
+  darwin*) OPEN_COMMAND=open ;;
+  linux-gnu) OPEN_COMMAND=xdg-open ;;
+esac
+
 [[ `echo $REMOTE | grep git@` ]] && REPO_URL='https://'`echo $REPO_URL | awk -F '@' '{ print $2 }' | \
     sed 's/\:/\//g'`
 
@@ -29,14 +34,14 @@ if [[ $4 ]]; then
 
   if [[ `echo $REPO_URL | grep bitbucket` ]]; then
     LINE_PARAM='#lines-'$LINE_PARAM':'$4
-    open "$REPO_URL/src/$LATEST_COMMIT/$1$LINE_PARAM"
+    $OPEN_COMMAND "$REPO_URL/src/$LATEST_COMMIT/$1$LINE_PARAM"
 
     exit 0
   fi
 fi
 
 if [[ `echo $REPO_URL | grep bitbucket` ]]; then
-  open "$REPO_URL/src/$LATEST_COMMIT/$1#lines-$LINE_PARAM"
+  $OPEN_COMMAND "$REPO_URL/src/$LATEST_COMMIT/$1#lines-$LINE_PARAM"
 
   exit 0
 fi
@@ -44,9 +49,4 @@ fi
 # open url in default browser
 URL=$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM
 
-case $OSTYPE in
-  darwin) open $URL ;;
-  darwin18) open $URL ;;
-  darwin19) open $URL ;;
-  linux-gnu) xdg-open $URL ;;
-esac
+$OPEN_COMMAND $URL
