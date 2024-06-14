@@ -10,7 +10,7 @@ Example using vim-plug:
 ```vim
 call plug#begin('~/.vim/plugged')
 
-Plug 'nicolasacquaviva/vim-open-repo'
+Plug 'nacq/vim-open-repo'
 
 call plug#end()
 ```
@@ -18,6 +18,14 @@ call plug#end()
 ## Usage
 
 Call `:OpenRepo` in any line or visual selection of lines to open the repository url.
+
+## Configuration
+
+Set the browser application to use when opening the repository url.
+
+```vim
+let g:vim_open_repo_browser = 'Google Chrome'
+```
 
 ## Optional configuration
 

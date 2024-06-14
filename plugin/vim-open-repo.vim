@@ -22,6 +22,11 @@ endfunction
 
 " 'range' will avoid the command to execute multiple times when there is a range selection
 function! OpenRepo() range
+  if !exists('g:vim_open_repo_browser')
+    echo "Error: The variable g:vim_open_repo_browser needs to be set"
+    return
+  endif
+
   let default_branch = 0
   let selection = GetVisualSelection()
   " current file path relative to the git project
@@ -31,7 +36,10 @@ function! OpenRepo() range
     let default_branch = g:vim_open_repo_default_branch
   endif
 
-  execute "!" s:plugin_path . "/open_in_repo.sh" current_file default_branch selection
+  let browser = g:vim_open_repo_browser
+
+  " wrapping the browser variable with quotes to send a string containing spaces as a single argument to the script
+  execute "!" s:plugin_path . "/open_in_repo.sh" . " " . current_file . " " .  default_branch . " " .  "\"" . browser . "\"" . " " . selection
 endfunction
 
 if !exists('g:vim_open_repo_loaded')
