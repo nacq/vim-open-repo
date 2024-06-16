@@ -46,7 +46,7 @@ URL=$REPO_URL/blob/$CURRENT_BRANCH/$1#L$LINE_PARAM
 
 case $OSTYPE in
   darwin*) OPEN_COMMAND="open -a \"$3\" \"$URL\"" ;;
-  linux-gnu) OPEN_COMMAND="$3\"$URL\"" ;;
+  linux-gnu) OPEN_COMMAND="$3\ \"$URL\"" ;;
 esac
 
 eval $OPEN_COMMAND
